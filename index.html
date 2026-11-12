@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#06120f">
+<meta name="description" content="Study Grove: a calm study timer where focused time grows an apple tree. Grow a little every day.">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Study Grove">
 <title>Study Grove · Grow a little every day.</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%230f3d2e'/%3E%3Cpath d='M16 25c-6-3-8-9-5-14 5 0 9 3 10 8 .6 3.500-1.500 5.500-5 6z' fill='%236fd3a8'/%3E%3C/svg%3E">
 <style>
@@ -482,9 +486,6 @@ input[type=date]{color-scheme:dark}
 .sub-list .sb{grid-column:2/-1;height:5px;border-radius:4px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:-4px}.sub-list .sb i{display:block;height:100%;border-radius:4px}
 .rep-empty{padding:34px 10px;text-align:center;color:var(--ink-3);font-size:14px}
 @media (max-width:640px){.rep-kpis{grid-template-columns:1fr}.sub-wrap{grid-template-columns:1fr;justify-items:center}.sub-list{width:100%}.rep-chart{gap:5px}.rc-v{font-size:10px}}
-.bkb{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);z-index:45;display:flex;align-items:center;gap:10px;padding:10px 12px 10px 18px;border-radius:22px;font-size:13px;color:var(--ink-2);width:max-content;max-width:min(600px,calc(100vw - 24px))}
-.bkb[hidden]{display:none}
-.bk-btns{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 .fold{display:flex;align-items:center;gap:10px;width:100%;padding:6px 0;background:none;border:0;color:var(--ink);text-align:left}
 .fold h4{margin:0;flex:1}.fold .cur-now{font-size:12.5px;color:var(--ink-3)}
 .fold svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;color:var(--ink-3);transition:transform .3s}
@@ -494,6 +495,96 @@ input[type=date]{color-scheme:dark}
 .curwrap>.curgrid{min-height:0;overflow:hidden;padding-top:6px}
 .dash:not(.min) .brand{cursor:pointer}
 .wipe-btn{color:#ffb4ad;border-color:rgba(228,88,76,.4)}.wipe-btn:hover{background:rgba(228,88,76,.16)}
+.tb{position:relative}
+/* ================= RESPONSIVE: phones, tablets, rotation ================= */
+html{-webkit-tap-highlight-color:transparent}
+button,.tb,.opt,.dc,.seg button,[role=tab],summary,label,select{touch-action:manipulation}
+.app{height:100%;height:100dvh}
+.no-full #btnFull{display:none}
+@media (max-width:900px){                                  /* narrow windows and tablets in portrait: keep the clock clear of the dashboard */
+  .clock{left:calc(50vw + 44px)}
+  .clock .t{font-size:30px}.clock .t small,.clock .d{display:none}
+  .tdbar .grow{display:none}.tdbar .tabs2{width:100%;display:grid;grid-template-columns:1fr 1fr}.tdbar .dsel{flex:1;min-width:0;width:auto}
+}
+@media (max-width:760px){                                  /* phones (either way up) */
+  .clock{left:max(12px,env(safe-area-inset-left));top:calc(9px + env(safe-area-inset-top));transform:none;padding:0;text-align:left}
+  .clock .t{font-size:25px;justify-content:flex-start;gap:3px}.clock .t em{font-size:11px;margin-left:3px}
+  .clock .d{display:block;font-size:9.5px;letter-spacing:.1em;margin-top:4px;white-space:nowrap}
+  .tr{right:max(10px,env(safe-area-inset-right));top:calc(10px + env(safe-area-inset-top));gap:6px}
+  .tb{width:40px;height:40px;padding:0;justify-content:center;border-radius:50%}
+  .tb .badge{position:absolute;top:-3px;right:-3px;margin:0;min-width:17px;height:17px;font-size:10px}
+  .dash{left:max(12px,env(safe-area-inset-left));right:max(12px,env(safe-area-inset-right));width:auto;top:calc(58px + env(safe-area-inset-top));
+    max-height:calc(100vh - 134px - env(safe-area-inset-top) - env(safe-area-inset-bottom));max-height:calc(100dvh - 134px - env(safe-area-inset-top) - env(safe-area-inset-bottom));--ring:clamp(100px,15.5dvh,140px);gap:8px}
+  .dash .brand p{display:block}
+  .bl{left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom));gap:10px}
+  .brk{top:calc(58px + env(safe-area-inset-top));width:calc(100vw - 24px);min-width:0;padding:10px 16px 16px 14px}
+  /* the ambient and sky menus become full-width sheets under the top bar */
+  .wrap{position:static}
+  .pop{position:fixed;left:12px;right:12px;top:calc(58px + env(safe-area-inset-top));width:auto;max-height:calc(100dvh - 140px - env(safe-area-inset-bottom));overflow:auto}
+  .subjp{max-height:60dvh;overflow:auto}
+  /* windows slide up from the bottom edge */
+  .modal{padding:10px 10px max(10px,env(safe-area-inset-bottom));place-items:end center}
+  .modal#confirm{place-items:center}
+  .sheet{width:100%;max-height:calc(100dvh - 20px - env(safe-area-inset-top));padding:18px 16px;border-radius:24px}
+  .sheet.small,.sheet.big,.sheet.rep{width:100%}
+  .sheet-head h3{font-size:21px}
+  #todoModal .sheet{width:100%!important}
+  .cal-nav{flex-wrap:wrap;gap:6px}
+  .mgrid{gap:4px}.dc{min-height:50px;padding:5px 5px;border-radius:11px}.dc .nt{display:none}.dc .tm{font-size:9.5px}.dc .n{font-size:12px}
+  .rep-chart{height:170px;gap:5px}
+  .row{gap:10px}
+  .addrow{flex-wrap:wrap}.addrow #tdIn{flex:1 1 100%}.addrow .dsel{width:auto;flex:1;min-width:0}
+  .tdbar .grow{display:none}.tdbar .tabs2{width:100%;display:grid;grid-template-columns:1fr 1fr}.tdbar .dsel{flex:1;min-width:0;width:auto}
+  .edit-row{flex-wrap:wrap}
+  .pl-list{max-height:34dvh}
+  .toast{max-width:calc(100vw - 24px)}
+  #toasts{bottom:calc(64px + env(safe-area-inset-bottom))}
+}
+@media (max-width:760px) and (max-height:520px){          /* phones on their side */
+  .dash{top:calc(54px + env(safe-area-inset-top));width:min(330px,calc(100vw - 24px));right:auto;max-height:calc(100dvh - 118px - env(safe-area-inset-top) - env(safe-area-inset-bottom));--ring:92px}
+  .bl{left:max(12px,env(safe-area-inset-left));transform:none;bottom:calc(10px + env(safe-area-inset-bottom))}
+  .modal{place-items:center}
+  .sheet{max-height:calc(100dvh - 16px);width:min(560px,100%)}
+}
+@media (min-width:761px) and (max-height:520px){          /* large phones and small tablets on their side */
+  .clock{top:10px}.clock .t{font-size:30px}.clock .t small{font-size:15px}.clock .d{display:none}
+  .tr{top:10px;right:max(12px,env(safe-area-inset-right))}.bl{bottom:10px;left:max(12px,env(safe-area-inset-left))}
+  .tb{height:40px}
+  .dash{top:10px;left:max(12px,env(safe-area-inset-left));width:296px;max-height:calc(100dvh - 68px);--ring:92px;gap:7px;padding:11px 13px 12px}
+  .brk{top:56px}
+  .pop{max-height:calc(100dvh - 70px);overflow:auto}
+  .modal{padding:8px}
+  .sheet{max-height:calc(100dvh - 16px)}
+}
+@media (pointer:coarse){                                    /* touch screens: bigger targets, no zoom-on-focus */
+  .tb{min-width:44px;min-height:44px}
+  .icon-btn{width:44px;height:44px}
+  .seg button{padding:12px 0}
+  .primary,.pill-btn{min-height:46px}
+  .mini-btn{height:40px}
+  .btn{min-height:44px}
+  .stepper button{width:40px;height:40px}
+  .chk{width:26px;height:26px}
+  .tk-row{padding:10px 2px}
+  .pl-b,.pl-x,.pl-p,.snd button{min-width:40px;min-height:40px}
+  .range{height:26px}
+  input,textarea,select,.inp{font-size:16px!important}
+  .opt{padding:13px 12px}
+  .dash-toggle{width:40px;height:40px}
+  .cur-opt{min-height:56px}
+  .dc{min-height:54px}
+}
+@media (max-width:520px) and (min-height:521px){.clock .d{display:none}}
+@media (max-height:520px){                                  /* any phone on its side: the timer sits beside its buttons so Start is always in view */
+  .dash{--ring:92px;gap:7px;padding:10px 13px 12px}
+  .dash .brand p{display:none}.dash .logo{width:32px;height:32px}
+  .timer-wrap{display:grid;grid-template-columns:auto 1fr;align-items:center;column-gap:12px;row-gap:6px}
+  .timer-wrap .ring{grid-row:1/span 3;grid-column:1}.timer-wrap>:not(.ring){grid-column:2}
+  .ctrls{grid-template-columns:1fr 1fr}.ctrls .primary{grid-column:1/-1}
+  .primary,.pill-btn{height:40px;min-height:40px}
+  .sub{display:none}.mode-label{margin-bottom:1px}
+}
+@media (max-width:360px){.clock .t{font-size:21px}.tb{width:38px;height:38px}.tr{gap:4px}}
 </style>
 </head>
 <body>
@@ -715,11 +806,9 @@ input[type=date]{color-scheme:dark}
     <div id="repBody"></div>
   </div>
 </div>
-<div class="panel bkb" id="bkBanner" role="status" hidden><span id="bkBMsg"></span><button type="button" class="mini-btn" id="bkBGo">Choose folder</button><button type="button" class="mini-btn" id="bkBLater">Not now</button><button type="button" class="mini-btn" id="bkBOff">Stop asking</button></div>
 <div id="toasts" aria-live="polite"></div>
 <noscript><p style="padding:24px;color:#fff">Study Grove needs JavaScript to grow your tree.</p></noscript>
 
-<script src="StudyGrove-Data.js"></script>
 <script>
 /* =====================================================================
    STUDY GROVE — application script
@@ -816,7 +905,7 @@ const SOUND_IDS=['morning','music','rain','birds'];
 const AWAY_MAX=6*3600e3;      // a timer left running longer than this with the tab closed is paused where it was last seen
 function defaults(){
   return{
-    v:2,seed:(Math.random()*1e9)|0,totalSeconds:0,days:{},sessions:[],picked:0,harvest:{},harvestDay:'',deleted:[],cycle:0,hintSeen:false,
+    v:2,seed:(Math.random()*1e9)|0,totalSeconds:0,days:{},sessions:[],picked:0,harvest:{},harvestDay:'',deleted:[],cycle:0,hintSeen:false,su:0,nu:{},
     settings:{focus:25,short:5,long:15,every:4,goal:120,resetMin:180,resetPending:null},
     customMin:45,subject:'',todos:[],notes:{},sky:'auto',
     amb:{on:[],vol:.35,mute:false,vols:{},plVol:.8},cursor:'default',ui:{min:null},
@@ -858,11 +947,13 @@ function migrate(o){
   if(SKY_OLD[d.sky])d.sky=SKY_OLD[d.sky];
   if(!SKY_MODES.includes(d.sky))d.sky='auto';
   d.sessions=(Array.isArray(d.sessions)?d.sessions:[]).filter(s=>s&&Number.isFinite(+s.t)&&Number.isFinite(+s.s)&&+s.s>=0&&s.t!==null&&s.s!==null).map(s=>({
-    id:s.id||('s'+s.t),t:+s.t,s:+s.s,subject:typeof s.subject==='string'?s.subject:'',kind:s.kind||(s.mode==='free'?'open':'pomo'),done:!!s.done}));
-  d.deleted=Array.isArray(d.deleted)?d.deleted.filter(x=>typeof x==='string').slice(-400):[];
+    id:s.id||('s'+s.t),t:+s.t,s:+s.s,subject:typeof s.subject==='string'?s.subject:'',kind:s.kind||(s.mode==='free'?'open':'pomo'),done:!!s.done,...(s.d&&typeof s.d==='object'&&!Array.isArray(s.d)?{d:Object.fromEntries(Object.entries(s.d).filter(([k,v])=>/^\d{4}-\d\d-\d\d$/.test(k)&&Number.isFinite(+v)&&+v>0).map(([k,v])=>[k,+v]))}:{})}));
+  d.deleted=Array.isArray(d.deleted)?d.deleted.filter(x=>typeof x==='string').slice(-2000):[];
   const dead=new Set(d.deleted);
   const seen=new Set();d.sessions=d.sessions.filter(s=>!dead.has(s.id)&&!seen.has(s.id)&&seen.add(s.id)).sort((a,b)=>a.t-b.t);
-  d.todos=(Array.isArray(d.todos)?d.todos:[]).filter(t=>t&&typeof t.text==='string'&&/^\d{4}-\d\d-\d\d$/.test(t.date||'')).map(t=>({id:String(t.id||uid()),text:t.text.slice(0,200),date:t.date,done:!!t.done}));
+  d.todos=(Array.isArray(d.todos)?d.todos:[]).filter(t=>t&&typeof t.text==='string'&&/^\d{4}-\d\d-\d\d$/.test(t.date||'')).map(t=>({id:String(t.id||uid()),text:t.text.slice(0,200),date:t.date,done:!!t.done,u:Math.max(0,num(t.u,0))}));
+  d.su=Math.max(0,num(d.su,0));
+  {const nu=d.nu&&typeof d.nu==='object'&&!Array.isArray(d.nu)?d.nu:{},cn={};Object.keys(nu).forEach(k=>{if(/^\d{4}-\d\d-\d\d$/.test(k)&&Number.isFinite(+nu[k])&&+nu[k]>0)cn[k]=+nu[k];});d.nu=cn;}
   const T0=d.timer,old=oldT;
   if(old)T0.sel=T0.mode==='free'?'open':'pomo';
   if(!['focus','short','long','free'].includes(T0.mode))T0.mode='focus';
@@ -913,19 +1004,10 @@ function parseBackup(txt){
     return o&&o.app==='StudyGrove'&&o.state&&typeof o.state==='object'?o:null;
   }catch(e){return null;}
 }
-let bkNote='';
 function loadState(){
   let local=null;
   for(const k of[KEY,BKEY]){           // fall back to the automatic backup if the main copy is missing or damaged
     try{const raw=localStorage.getItem(k);if(raw){const o=JSON.parse(raw);if(o&&typeof o==='object'){local=migrate(o);break;}}}catch(e){}
-  }
-  // StudyGrove-Data.js sitting next to this page is loaded automatically: it restores an empty browser and is merged into an existing one
-  let skip=false;try{skip=sessionStorage.getItem('sg.ignoreBackup')==='1';}catch(e){}
-  const bo=skip?null:window.__STUDYGROVE_BACKUP,bs=bo&&bo.app==='StudyGrove'&&bo.state&&typeof bo.state==='object'?migrate(bo.state):null;
-  if(bs){
-    if(!local||isEmptyState(local)){bkNote='restored';return bs;}
-    const r=mergeStates(local,bs);
-    if(r.changed){bkNote='merged';return r.state;}
   }
   return local||defaults();
 }
@@ -933,107 +1015,109 @@ let state=loadState();
 let T=state.timer;
 const S=()=>state.settings;
 
-/* ============================== LOCAL BACKUP FILE ==============================
-   Browsers cannot silently write files, so the file is chosen once; after that StudyGrove-Data.js is kept up to date there
-   and is picked up automatically whenever it sits next to index.html. */
-const BK_FILE='StudyGrove-Data.js',BK_PREV='StudyGrove-Data.previous.js';
-const bk={file:null,status:'init',ready:false,busy:false,dirty:false,t:0,last:0,err:'',prevDone:false,reloading:false};
-function bkDB(){return new Promise((res,rej)=>{const r=indexedDB.open('studygrove-backup',1);r.onupgradeneeded=()=>r.result.createObjectStore('kv');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);});}
-async function bkGet(k){const db=await bkDB();return new Promise((res,rej)=>{const q=db.transaction('kv').objectStore('kv').get(k);q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error);});}
-async function bkPut(k,v){const db=await bkDB();return new Promise((res,rej)=>{const tx=db.transaction('kv','readwrite');tx.objectStore('kv').put(v,k);tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error);});}
-const bkPayload=()=>({app:'StudyGrove',format:1,savedAt:Date.now(),state});
-function bkSchedule(){
-  if(!bk.ready||bk.t)return;
-  bk.t=setTimeout(()=>{bk.t=0;bkWrite();},T&&T.status==='running'?30000:4000);
+/* ============================== BACKUP FILE (export / import) AND DEVICE RESET ==============================
+   Study Grove keeps everything in this browser only: nothing is sent anywhere. Export makes a file you can keep or open on another device;
+   Import adds the data from such a file without removing anything. */
+/* what a backup holds: everything personal, but not the running timer, the collapsed/expanded panel, which sounds are playing or the subject picked right now */
+const cloudPack=s=>{
+  const o=JSON.parse(JSON.stringify(s));delete o.timer;delete o.ui;delete o.cycle;delete o.subject;
+  if(o.amb)delete o.amb.on;
+  o.todos=(o.todos||[]).slice().sort((x,y)=>x.id<y.id?-1:x.id>y.id?1:0);
+  o.sessions=(o.sessions||[]).slice().sort((x,y)=>x.t-y.t||(x.id<y.id?-1:1));
+  o.deleted=(o.deleted||[]).slice().sort();
+  return o;
+};
+const cloudFp=()=>JSON.stringify([state.settings,state.customMin,state.sky,state.cursor,state.amb.vol,state.amb.mute,state.amb.vols]);
+let spFp='';
+function stampSettings(){const fp=cloudFp();if(spFp&&fp!==spFp)state.su=Date.now();spFp=fp;}
+
+
+/* merge the data from a backup into this device's data. It only ever adds, except where something was deliberately deleted or edited later */
+function mergeCloud(a,b0){
+  const b=migrate(b0),r=mergeStates(a,b),m=r.state;
+  // study time per day: each side's total plus the sessions it has not seen yet (exact when two devices studied on the same day)
+  {const idsA=new Set(a.sessions.map(s=>s.id)),idsB=new Set(b.sessions.map(s=>s.id)),da=new Set(a.deleted||[]),db=new Set(b.deleted||[]),dd=new Set([...da,...db]);
+   const contrib=list=>{const o={};let tot=0;for(const s of list){const d=s.d&&typeof s.d==='object'?s.d:{[studyDay(s.t)]:s.s};for(const k in d){const v=fin(+d[k]);if(v>0){o[k]=(o[k]||0)+v;tot+=v;}}}return{o,tot};};
+   const nA=contrib(a.sessions.filter(s=>!idsB.has(s.id)&&!dd.has(s.id))),nB=contrib(b.sessions.filter(s=>!idsA.has(s.id)&&!dd.has(s.id)));
+   const aNew=[...da].some(x=>!db.has(x)),bNew=[...db].some(x=>!da.has(x));          // whoever deleted something is up to date on totals
+   const comb=(va,vb,xa,xb)=>(aNew&&!bNew)||(aNew&&bNew)?va+xb:bNew?vb+xa:Math.max(va+xb,vb+xa);
+   const days={};new Set([...Object.keys(a.days||{}),...Object.keys(b.days||{}),...Object.keys(nA.o),...Object.keys(nB.o)]).forEach(k=>{const v=comb(fin(+a.days[k]),fin(+(b.days||{})[k]),nA.o[k]||0,nB.o[k]||0);if(v>0)days[k]=v;});
+   m.days=days;m.totalSeconds=Math.max(comb(fin(+a.totalSeconds),fin(+b.totalSeconds),nA.tot,nB.tot),Object.keys(days).reduce((q,k)=>q+days[k],0));}
+  const dead=new Set(m.deleted),bt=new Map((b.todos||[]).map(t=>[t.id,t]));
+  m.todos=m.todos.filter(t=>!dead.has(t.id)).map(t=>{const o=bt.get(t.id);return o&&(+o.u||0)>(+t.u||0)?o:t;});
+  const na=a.nu||{},nb=b.nu||{},keys=new Set([...Object.keys(a.notes||{}),...Object.keys(b.notes||{}),...Object.keys(na),...Object.keys(nb)]);
+  m.nu={};
+  keys.forEach(k=>{
+    const ta=+na[k]||0,tb=+nb[k]||0,A=(a.notes||{})[k],B=(b.notes||{})[k],v=(tb>ta||(tb===ta&&A==null))?B:A;
+    if(v!=null&&v!=='')m.notes[k]=v;else delete m.notes[k];
+    if(Math.max(ta,tb))m.nu[k]=Math.max(ta,tb);
+  });
+  if((+b.su||0)>(+a.su||0)){
+    m.settings=JSON.parse(JSON.stringify(b.settings));m.customMin=b.customMin;m.sky=b.sky;m.cursor=b.cursor;
+    m.amb=Object.assign({},m.amb,{vol:b.amb.vol,mute:b.amb.mute,vols:b.amb.vols});m.su=+b.su;
+  }else m.su=+a.su||0;
+  m.seed=b.seed;                                    // one tree identity per account
+  const ha=a.harvestDay||'',hb=b.harvestDay||'';
+  if(hb>ha){m.harvest=JSON.parse(JSON.stringify(b.harvest||{}));m.harvestDay=hb;}
+  else if(hb===ha)Object.keys(b.harvest||{}).forEach(k=>{m.harvest[k]=Math.max(+m.harvest[k]||0,+b.harvest[k]||0);});
+  m.hintSeen=!!(a.hintSeen||b.hintSeen);
+  m.timer=a.timer;m.ui=a.ui;
+  return m;
 }
-async function bkWrite(){
-  if(!bk.ready||!bk.file)return;
-  if(bk.busy){bk.dirty=true;return;}
-  bk.busy=true;
+function adoptState(m){
+  const keepT=state.timer,keepUi=state.ui;
+  Object.keys(state).forEach(k=>{delete state[k];});
+  Object.assign(state,m);state.timer=keepT;state.ui=keepUi;
+  spFp=cloudFp();
   try{
-    const txt='/* Study Grove backup. Keep this file next to index.html and it is loaded automatically. Please do not edit. */\nwindow.__STUDYGROVE_BACKUP='+JSON.stringify(bkPayload())+';\n';
-    if(!bk.prevDone){        // once per visit, keep the previous copy as a safety net
-      try{const old=await bk.file.getFile();if(old.size>0)await bkPut('prevText',await old.text());}catch(e){}
-      bk.prevDone=true;
-    }
-    const w=await bk.file.createWritable();
-    await w.write(txt);await w.close();
-    bk.last=Date.now();bk.status='ok';bk.err='';
-  }catch(e){
-    bk.err=e&&e.message||String(e);
-    if(e&&e.name==='NotAllowedError'){bk.ready=false;bkAskPermission();}else bk.status='error';
-  }
-  bk.busy=false;bkRender();
-  if(bk.dirty){bk.dirty=false;bkSchedule();}
+    applyCursor();syncSettings();curDay='';syncDay();rebuildForest();
+    if(ambBus)ambBus.gain.setTargetAtTime(state.amb.vol,AC.currentTime,.03);
+    if(master)master.gain.setTargetAtTime(state.amb.mute?0:1,AC.currentTime,.03);
+    sessVer++;updateAll();refreshTodos();
+    if(isOpen(el.calModal))refreshCal();
+    if(isOpen(el.repModal))renderReport();
+    renderAmb();
+  }catch(e){console.error('Study Grove sync:',e);}
+  try{const j=JSON.stringify(state);localStorage.setItem(KEY,j);}catch(e){}
 }
-function bkApplyAndReload(st){         // swap in merged data, then restart cleanly (nothing may overwrite it on the way out)
-  bk.reloading=true;
-  try{const j=JSON.stringify(st);localStorage.setItem(KEY,j);localStorage.setItem(BKEY,j);}catch(e){}
+
+
+const deleteDB=n=>new Promise(res=>{try{const r=indexedDB.deleteDatabase(n);r.onsuccess=r.onerror=r.onblocked=()=>res();setTimeout(res,1500);}catch(e){res();}});
+let wiping=false;
+async function localWipe(){            // forget everything on this device, then start clean
+  wiping=true;
+  try{Object.keys(localStorage).filter(k=>k.indexOf('studygrove')===0).forEach(k=>localStorage.removeItem(k));}catch(e){}
+  try{if(PL.db)PL.db.close();}catch(e){}
+  await Promise.all(['studygrove-media','studygrove-backup'].map(deleteDB));
   location.reload();
 }
-async function bkConnect(){
-  bk.ready=false;bk.status='connecting';bkRender();
-  try{
-    let txt=null;
-    try{txt=await(await bk.file.getFile()).text();}catch(e){if(e.name!=='NotFoundError')throw e;}
-    if(txt&&txt.trim()){
-      const o=parseBackup(txt);
-      if(!o){        // never overwrite something unreadable: keep it aside first
-        await bkPut('unreadableText',txt);
-      }else{
-        const bs=migrate(o.state),r=isEmptyState(state)?{state:bs,changed:!isEmptyState(bs)}:mergeStates(state,bs);
-        if(r.changed){
-          if(T.status!=='idle'){bk.status='wait';bkRender();return;}
-          bkApplyAndReload(r.state);return;
-        }
-      }
-    }
-    bk.ready=true;bk.status='ok';await bkWrite();
-  }catch(e){bk.status='error';bk.err=e&&e.message||String(e);bkRender();}
+/* ---- manual export / import (an extra safety net) ---- */
+function exportData(){
+  if(T.status!=='idle')toast('Tip: the running session is not in the file until you press Save.');
+  const o={app:'StudyGrove',format:1,savedAt:Date.now(),state:cloudPack(state)};
+  const url=URL.createObjectURL(new Blob([JSON.stringify(o)],{type:'application/json'}));
+  const a=document.createElement('a');a.href=url;a.download='StudyGrove-backup-'+dateKey(new Date())+'.json';
+  document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(url);a.remove();},2000);
+  toast('Backup file downloaded.');
 }
-const bkFlag=(k,store)=>{try{return (store||localStorage).getItem(k)==='1';}catch(e){return false;}};
-const bkSet=(k,store)=>{try{(store||localStorage).setItem(k,'1');}catch(e){}};
-function bkAskPermission(){        // Chrome only shows its own dialog when the person clicks Reconnect; nothing pops up by itself
-  bk.status='needperm';bkRender();
-  if(bkFlag('studygrove.bkOff')||bkFlag('sg.bkNot',sessionStorage))return;
-  bkBanner('Backup is paused. Click Reconnect once so your latest study is saved to your backup file again.',true,'reconnect');
+async function importData(file){
+  let o=null;try{o=parseBackup(await file.text());}catch(e){}
+  if(!o){toast('That file is not a Study Grove backup.');return;}
+  askConfirm('Import this backup?','Everything in the file is added to your current data. Nothing you already have is removed.',
+    [{label:'Cancel'},{label:'Import',cls:'main',fn:()=>{
+      const n0=state.sessions.length,t0=state.todos.length;
+      const m=mergeCloud(state,o.state);
+      adoptState(m);save();
+      const ns=state.sessions.length-n0,nt=state.todos.length-t0;
+      toast('Imported '+ns+(ns===1?' session':' sessions')+(nt>0?' and '+nt+(nt===1?' task':' tasks'):'')+'.');
+    }}]);
 }
-async function bkReconnect(){
-  try{
-    const r=await bk.file.requestPermission({mode:'readwrite'});
-    if(r==='granted'){bkBanner('');await bkConnect();}else{bk.status='denied';bkRender();}
-  }catch(e){bk.status='denied';bkRender();}
-}
-async function bkChoose(){
-  if(!window.showSaveFilePicker)return;
-  try{
-    const h=await window.showSaveFilePicker({id:'studygrove',suggestedName:BK_FILE,types:[{description:'Study Grove data',accept:{'text/javascript':['.js']}}]});
-    bk.file=h;bk.prevDone=false;try{await bkPut('file',h);}catch(e){}bkBanner('');await bkConnect();
-  }catch(e){
-    if(e&&e.name==='AbortError')return;
-    bk.status='error';bk.err=(e&&e.message)||String(e);bkRender();
-  }
-}
-async function bkInit(){
-  if(!window.showSaveFilePicker){bk.status='unsupported';bkRender();return;}
-  try{bk.file=(await bkGet('file'))||null;}catch(e){bk.file=null;}
-  if(!bk.file){bk.status='none';bkRender();setTimeout(()=>{if(bk.status==='none'&&!bkFlag('studygrove.bkOff')&&Date.now()-(+localStorage.getItem('studygrove.bkLater')||0)>864e5)bkBanner('Choose a file to keep your study data in. Save it as StudyGrove-Data.js in the same folder as index.html. You only do this once.',true,'choose');},1200);return;}
-  let perm='prompt';try{perm=await bk.file.queryPermission({mode:'readwrite'});}catch(e){}
-  if(perm==='granted')await bkConnect();else bkAskPermission();
-}
-function bkBanner(msg,withButtons,mode){
-  const b=el.bkBanner;if(!b)return;
-  if(!msg){b.hidden=true;return;}
-  bk.mode=mode||'choose';setText(el.bkBMsg,msg);setText(el.bkBGo,bk.mode==='reconnect'?'Reconnect':'Choose file');el.bkBGo.hidden=el.bkBLater.hidden=el.bkBOff.hidden=!withButtons;b.hidden=false;
-}
-let bkErrShown=false;
-function bkRender(){       // the backup runs quietly; only a real failure is worth interrupting for
-  if(bk.status==='error'&&!bkErrShown){bkErrShown=true;toast('Backup problem: '+bk.err);}
-  if(bk.status==='ok')bkErrShown=false;
-}
+
+
 let lastSave=0,lastBackup=0;
 function save(){
-  if(bk.reloading)return;
+  if(wiping)return;
+  stampSettings();
   const now=Date.now();
   try{
     const json=JSON.stringify(state);
@@ -1041,7 +1125,6 @@ function save(){
     if(now-lastBackup>600000){localStorage.setItem(BKEY,json);lastBackup=now;}   // rolling local backup every 10 minutes
   }catch(e){}
   lastSave=now;
-  bkSchedule();
 }
 
 /* ========================== GROWTH MODEL ========================== */
@@ -1811,7 +1894,7 @@ function tryPick(px,py){
   let best=null,bd=1e9;
   for(const sl of tree.slots){
     if(!sl.pick)continue;
-    const sx=cx+sl.lx*s,sy=gy+sl.ly*s,rr=sl.lr*s*1.5+8,dx=px-sx,dy=py-sy,d=dx*dx+dy*dy;
+    const sx=cx+sl.lx*s,sy=gy+sl.ly*s,rr=sl.lr*s*1.5+(COARSE?18:8),dx=px-sx,dy=py-sy,d=dx*dx+dy*dy;
     if(d<=rr*rr&&d<bd){bd=d;best=sl;}
   }
   if(best)pick(best,px,py);
@@ -1820,7 +1903,7 @@ function hoverPick(px,py){
   const{cx,gy,s}=scene;
   for(const sl of tree.slots){
     if(!sl.pick)continue;
-    const sx=cx+sl.lx*s,sy=gy+sl.ly*s,rr=sl.lr*s*1.5+8;
+    const sx=cx+sl.lx*s,sy=gy+sl.ly*s,rr=sl.lr*s*1.5+(COARSE?18:8);
     if((px-sx)*(px-sx)+(py-sy)*(py-sy)<=rr*rr)return true;
   }
   return false;
@@ -1878,7 +1961,8 @@ function recordSession(done){
   if(!isFocus()||!(T.banked>=1))return false;
   const id=T.sid||('s'+(T.sessionStart||Date.now()));
   if(state.sessions.some(x=>x.id===id))return false;
-  state.sessions.push({id,t:T.sessionStart||Date.now(),s:Math.round(T.banked),subject:T.subject||state.subject||'',kind:T.sel,done:!!done});
+  const split={};for(const k of Object.keys(T.segs)){const v=fin(T.segs[k]);if(v>0)split[k]=Math.round(v*1000)/1000;}
+  state.sessions.push({id,t:T.sessionStart||Date.now(),s:Math.round(T.banked),subject:T.subject||state.subject||'',kind:T.sel,done:!!done,d:split});
   commitFocus();
   sessVer++;return true;
 }
@@ -1926,40 +2010,25 @@ function saveSession(){
   return true;
 }
 function confirmWipe(){
-  askConfirm('Reset everything?','This erases every session, the tree and forest, your goals and settings, your music and sounds, and the backup file. It cannot be undone.',
-    [{label:'Keep my data'},{label:'Continue…',cls:'warn',fn:()=>askConfirm('Are you absolutely sure?','All Study Grove data in this browser and in your backup file will be permanently deleted, and the app starts again from a seed.',
+  askConfirm('Reset everything?','This erases every session, the tree and forest, your goals and settings and your music and sounds on this device, It cannot be undone.',
+    [{label:'Keep my data'},{label:'Continue…',cls:'warn',fn:()=>askConfirm('Are you absolutely sure?','All your Study Grove data on this device will be permanently deleted, and the app starts again from a seed.',
       [{label:'No, keep everything'},{label:'Erase everything',cls:'warn',fn:wipeAll}])}]);
 }
-async function wipeAll(){
-  bk.reloading=true;clearTimeout(bk.t);bk.ready=false;      // nothing may write the old data back while we clean up
-  let fileLeft=false;
-  try{
-    if(bk.file){
-      let ok=(await bk.file.queryPermission({mode:'readwrite'}))==='granted';
-      if(!ok)ok=(await bk.file.requestPermission({mode:'readwrite'}))==='granted';
-      if(!ok)fileLeft=true;
-      else{try{const w=await bk.file.createWritable();await w.write('/* Study Grove data was reset. */\n');await w.close();}catch(e){fileLeft=true;}}
-    }else if(window.__STUDYGROVE_BACKUP)fileLeft=true;
-  }catch(e){fileLeft=true;}
-  try{Object.keys(localStorage).filter(k=>k.indexOf('studygrove')===0).forEach(k=>localStorage.removeItem(k));}catch(e){}
-  await Promise.all(['studygrove-media','studygrove-backup'].map(n=>new Promise(res=>{
-    try{const r=indexedDB.deleteDatabase(n);r.onsuccess=r.onerror=r.onblocked=()=>res();setTimeout(res,1500);}catch(e){res();}})));
-  try{
-    sessionStorage.removeItem('sg.ignoreBackup');sessionStorage.removeItem('sg.note');
-    if(fileLeft){sessionStorage.setItem('sg.ignoreBackup','1');sessionStorage.setItem('sg.note','Everything was reset. Delete StudyGrove-Data.js next to index.html as well, or it will restore your old data the next time you open the app.');}
-  }catch(e){}
-  location.reload();
-}
+async function wipeAll(){await localWipe();}
 function deleteSession(id){        // removes a saved session completely: its day total, the tree, the reports and every count
   const i=state.sessions.findIndex(x=>x.id===id);if(i<0)return;
   const s=state.sessions[i],total0=Math.max(0,fin(s.s));let rem=total0;
   const d=parseKey(studyDay(s.t));
+  if(s.d&&typeof s.d==='object'){
+    for(const k of Object.keys(s.d)){const v=fin(Number(state.days[k])),take=Math.min(fin(+s.d[k]),v);if(take>0){const nv=v-take;if(nv>0.5)state.days[k]=nv;else delete state.days[k];rem-=take;}}
+    rem=Math.max(0,rem);
+  }else
   for(let n=0;n<4&&rem>0;n++,d.setDate(d.getDate()+1)){
     const k=dateKey(d),v=fin(Number(state.days[k])),take=Math.min(rem,v);
     if(take>0){const nv=v-take;if(nv>0.5)state.days[k]=nv;else delete state.days[k];rem-=take;}
   }
   state.totalSeconds=Math.max(0,fin(state.totalSeconds)-(total0-rem));
-  state.sessions.splice(i,1);state.deleted.push(id);if(state.deleted.length>400)state.deleted.shift();
+  state.sessions.splice(i,1);state.deleted.push(id);if(state.deleted.length>2000)state.deleted.shift();
   sessVer++;save();updateAll();refreshCal();
   toast('Session deleted · '+fmtDur(total0)+' removed');
 }
@@ -2023,7 +2092,6 @@ function completeSession(endAt,live){
 function tick(){
   const now=Date.now();
   syncDay();
-  if(bk.status==='wait'&&T.status==='idle')bkConnect();
   if(T.status==='running'){
     const live=now-(T.lastTick||now)<15000;
     let guard=0;
@@ -2127,13 +2195,24 @@ const SND_CFG={morning:{trim:4.2,xf:4},music:{trim:.2,ov:3.4,fin:1.5},rain:{trim
 // IndexedDB, so they play offline from then on. The bytes are stored exactly as they are on your disk.
 const SND_NAMES={morning:/morning/i,music:/music/i,rain:/rain/i,birds:/bird/i};
 const SND_URL={},PENDING=new Set(),WANT=new Set();   // WANT: sounds you asked for before their files were chosen
+// The four recordings ship with the site (morning.mp3, music.mp3, rain.mp3, birds.mp3 next to index.html) and are fetched on first use.
+// A copy chosen from disk earlier is only a fallback for when the site's file cannot be reached (for example when the page is opened as a local file).
+const COARSE=!!(window.matchMedia&&matchMedia('(pointer:coarse)').matches);
+const SND_FILE={morning:'morning.mp3',music:'music.mp3',rain:'rain.mp3',birds:'birds.mp3'};
 async function soundUrl(id){
   if(SND_URL[id])return SND_URL[id];
-  if(PL.ready)await PL.ready;
-  if(!PL.db)throw new Error('library unavailable');
-  const rec=await dbReq('sounds','readonly',st=>st.get(id));
-  if(!rec||!rec.blob){const e=new Error('missing '+id);e.missing=true;throw e;}
-  return SND_URL[id]=URL.createObjectURL(rec.blob);
+  let blob=null;
+  try{
+    const r=await fetch(SND_FILE[id],{cache:'force-cache'});
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    const b=await r.blob();
+    if(b.size>2000&&!/^text\//.test(b.type))blob=b;
+  }catch(e){}
+  if(!blob){
+    try{if(PL.ready)await PL.ready;if(PL.db){const rec=await dbReq('sounds','readonly',st=>st.get(id));if(rec&&rec.blob)blob=rec.blob;}}catch(e){}
+  }
+  if(!blob){const e=new Error('missing '+id);e.missing=true;throw e;}
+  return SND_URL[id]=URL.createObjectURL(blob);
 }
 async function haveSounds(){
   if(PL.ready)await PL.ready;if(!PL.db)return{};
@@ -2160,13 +2239,14 @@ async function importSounds(files){
 const XF_IN=Float32Array.from({length:64},(_,i)=>Math.sin(Math.PI/2*i/63)),XF_OUT=Float32Array.from({length:64},(_,i)=>Math.cos(Math.PI/2*i/63));
 const AMB={};
 const soundVol=id=>clamp(num(state.amb.vols[id],.8),0,1);
-function makeLoop(id,url){
+const SILENT_WAV='data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=';
+function makeLoop(id,url,pre){
   const cfg=SND_CFG[id];
   const out=AC.createGain();out.gain.value=0;out.connect(ambBus);
   const vol=AC.createGain();vol.gain.value=cfg.trim*soundVol(id);vol.connect(out);
   const L={id,out,vol,alive:true,cur:0,xf:false,parts:[],iv:0,to:0};
   for(let k=0;k<2;k++){
-    const a=new Audio();a.preload='auto';a.loop=false;a.src=url;
+    const a=(pre&&pre[k])||new Audio();a.preload='auto';a.loop=false;a.src=url;
     const src=AC.createMediaElementSource(a),g=AC.createGain();g.gain.value=0;src.connect(g);g.connect(vol);
     a.addEventListener('error',()=>{if(L.alive)toast('Could not play '+id+'.');});
     L.parts.push({a,g,src});
@@ -2210,15 +2290,19 @@ async function ambStart(id){
   if(AMB[id]||PENDING.has(id)||!SND_CFG[id])return;
   if(!ensureAudio())return;
   PENDING.add(id);renderAmb();
+  // phones only allow audio to start from a tap, and the file may take a moment to arrive: touch both players now, inside the tap
+  const pre=[new Audio(),new Audio()];pre.forEach(a=>{try{a.src=SILENT_WAV;const p=a.play();if(p&&p.catch)p.catch(()=>{});}catch(e){}});
   try{
     const url=await soundUrl(id);
     if(!PENDING.has(id))return;                       // switched off while it was loading
-    PENDING.delete(id);AMB[id]=makeLoop(id,url);
+    PENDING.delete(id);AMB[id]=makeLoop(id,url,pre);
   }catch(e){
     PENDING.delete(id);if(!(e&&e.missing))console.error('Study Grove audio:',e);
     if(e&&e.missing)WANT.add(id);
-    if(e&&e.missing)haveSounds().then(h=>askSoundFiles(Object.keys(SND_NAMES).filter(k=>!h[k])));
-    else toast('Could not load that sound.');
+    if(e&&e.missing){
+      if(location.protocol==='file:')haveSounds().then(h=>askSoundFiles(Object.keys(SND_NAMES).filter(k=>!h[k])));
+      else toast(navigator.onLine?'That sound is not available right now.':'You are offline, so that sound could not load.');
+    }else toast('Could not load that sound.');
   }
   persistAmb();
 }
@@ -2387,7 +2471,7 @@ function renderAmb(){
     const sv=$('.sv',r);if(document.activeElement!==sv)sv.value=Math.round(soundVol(r.dataset.id)*100);
   });
   renderAmbBtn();
-  haveSounds().then(h=>{const b=$('#sndLoad');if(b)b.hidden=Object.keys(SND_NAMES).every(k=>h[k]);});
+  haveSounds().then(h=>{const b=$('#sndLoad');if(b)b.hidden=location.protocol!=='file:'||Object.keys(SND_NAMES).every(k=>h[k]);});
   el.ambMute.setAttribute('aria-pressed',state.amb.mute?'true':'false');
   el.ambMute.innerHTML='<svg class="i"><use href="#i-'+(state.amb.mute?'mute':'vol')+'"/></svg><span>'+(state.amb.mute?'Unmute':'Mute')+'</span>';
   if(document.activeElement!==el.ambVol)el.ambVol.value=Math.round(state.amb.vol*100);
@@ -2635,7 +2719,7 @@ function buildSettings(){
   });
   h+='</div><div class="group fgroup"><button type="button" class="fold" id="curFold" aria-expanded="false" aria-controls="curGrid"><h4>Cursor</h4><span class="cur-now" id="curNow"></span><svg class="i" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button><div class="curwrap" id="curWrap"><div class="curgrid" id="curGrid" role="group" aria-label="Mouse cursor">'+CURSORS.map(([id,label])=>
     '<button type="button" class="cur-opt" data-curid="'+id+'" aria-pressed="false" aria-label="'+label+' cursor"><svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">'+(id==='default'?CUR_ARROW:CUR_SVG[id])+'</svg><span>'+label+'</span></button>').join('')+'</div></div>';
-  h+='</div><div class="group fgroup"><h4>Reset</h4><div class="row"><div class="r-txt"><b>Reset everything</b><small>Erases all study history, the tree, settings, music and sounds from this browser, and removes the backup file.</small></div><button type="button" class="mini-btn wipe-btn" id="wipeAll">Reset…</button></div>';
+  h+='</div><div class="group fgroup"><h4>Your data</h4><div class="row"><div class="r-txt"><b>Export a backup</b><small>Your study data is saved in this browser only. Download a copy to keep it safe or to open it on another device.</small></div><button type="button" class="mini-btn" id="exportData">Export</button></div><div class="row"><div class="r-txt"><b>Import a backup</b><small>Add the data from a backup file. Nothing is removed.</small></div><button type="button" class="mini-btn" id="importBtn">Import…</button><input type="file" id="importFile" accept=".json,.js,application/json" hidden></div></div><div class="group fgroup"><h4>Reset</h4><div class="row"><div class="r-txt"><b>Reset everything</b><small>Erases all study history, the tree, settings, music and sounds from this device.</small></div><button type="button" class="mini-btn wipe-btn" id="wipeAll">Reset…</button></div>';
   el.setBody.innerHTML=h+'</div>';
 }
 const fmt12=m=>{const h=Math.floor(m/60),mm=m%60;return((h%12)||12)+':'+pad(mm)+' '+(h>=12?'PM':'AM');};
@@ -2696,19 +2780,19 @@ function renderBadge(){
 function addTodo(text,date){
   text=(text||'').trim();
   if(!text)return false;
-  state.todos.push({id:uid(),text:text.slice(0,200),date:/^\d{4}-\d\d-\d\d$/.test(date)?date:studyDay(),done:false});
+  state.todos.push({id:uid(),text:text.slice(0,200),date:/^\d{4}-\d\d-\d\d$/.test(date)?date:studyDay(),done:false,u:Date.now()});
   save();refreshTodos();return true;
 }
 function todoAct(act,id,btn){
   const t=state.todos.find(x=>x.id===id);
-  if(act==='toggle'&&t)t.done=!t.done;
-  else if(act==='del'){state.todos=state.todos.filter(x=>x.id!==id);if(ui.editing===id)ui.editing=null;}
+  if(act==='toggle'&&t){t.done=!t.done;t.u=Date.now();}
+  else if(act==='del'){state.todos=state.todos.filter(x=>x.id!==id);state.deleted.push(id);if(state.deleted.length>2000)state.deleted.shift();if(ui.editing===id)ui.editing=null;}
   else if(act==='edit')ui.editing=id;
   else if(act==='cancel')ui.editing=null;
   else if(act==='save'&&t){
     const row=btn.closest('.tk-row'),txt=$('[data-edit-text]',row).value.trim(),dt=$('[data-edit-date]',row).value;
     if(!txt){toast('A task needs some text.');return;}
-    t.text=txt.slice(0,200);if(/^\d{4}-\d\d-\d\d$/.test(dt))t.date=dt;ui.editing=null;
+    t.text=txt.slice(0,200);if(/^\d{4}-\d\d-\d\d$/.test(dt))t.date=dt;t.u=Date.now();ui.editing=null;
   }
   save();refreshTodos();
 }
@@ -2763,7 +2847,7 @@ function renderDay(){
 }
 function noteInput(v){
   const k=ui.sel;
-  if(v.trim())state.notes[k]=v;else delete state.notes[k];
+  if(v.trim())state.notes[k]=v;else delete state.notes[k];state.nu[k]=Date.now();
   clearTimeout(ui.noteT);ui.noteT=setTimeout(()=>{save();if(isOpen(el.calModal))renderCalGrid();ui.noteT=0;},350);
 }
 function flushNote(){if(ui.noteT){clearTimeout(ui.noteT);ui.noteT=0;save();}}
@@ -2942,9 +3026,6 @@ function bindEvents(){
   // bottom-left: calendar · to-do
   el.btnCal.addEventListener('click',openCal);
   el.btnTodo.addEventListener('click',openTodo);
-  el.bkBGo.addEventListener('click',()=>{if(bk.mode==='reconnect')bkReconnect();else bkChoose();});
-  el.bkBLater.addEventListener('click',()=>{if(bk.mode==='reconnect')bkSet('sg.bkNot',sessionStorage);else{try{localStorage.setItem('studygrove.bkLater',String(Date.now()));}catch(e){}}bkBanner('');});
-  el.bkBOff.addEventListener('click',()=>{bkSet('studygrove.bkOff');bkBanner('');toast('Okay, no more backup reminders. Your data is still saved in this browser.');});
   el.btnRep.addEventListener('click',openRep);el.repClose.addEventListener('click',closeRep);
   el.repModal.addEventListener('click',e=>{
     const t=e.target.closest('[data-rtab],[data-rw],[data-scope]');if(!t||t.disabled)return;
@@ -2967,10 +3048,12 @@ function bindEvents(){
     const co=e.target.closest('.cur-opt');if(co){setCursor(co.dataset.curid);return;}
     if(e.target.closest('#curFold')){toggleCurFold();return;}
     if(e.target.closest('#wipeAll')){confirmWipe();return;}
+    if(e.target.closest('#exportData')){exportData();return;}
+    if(e.target.closest('#importBtn')){$('#importFile').click();return;}
     const b=e.target.closest('[data-d]');
     if(b){const st=b.closest('.stepper'),k=st.dataset.key;setNum(k,getNum(k)+(+b.dataset.d));syncSettings();}
   });
-  el.setBody.addEventListener('change',e=>{if(e.target.id==='setReset'){setResetTime(e.target.value);return;}if(e.target.matches('.stepper input')){setNum(e.target.closest('.stepper').dataset.key,e.target.value);syncSettings();}});
+  el.setBody.addEventListener('change',e=>{if(e.target.id==='importFile'){const f=e.target.files[0];e.target.value='';if(f)importData(f);return;}if(e.target.id==='setReset'){setResetTime(e.target.value);return;}if(e.target.matches('.stepper input')){setNum(e.target.closest('.stepper').dataset.key,e.target.value);syncSettings();}});
 
   // calendar
   el.calPrev.addEventListener('click',()=>calMove(-1));
@@ -3027,7 +3110,7 @@ function bindEvents(){
     if(e.code==='Space'&&!e.repeat&&spaceOK(e)){e.preventDefault();toggleTimer();}
   });
   document.addEventListener('keyup',e=>{if(e.code==='Space'&&spaceOK(e))e.preventDefault();});   // stop Space from "clicking" a focused button
-  document.addEventListener('visibilitychange',()=>{if(!document.hidden)tick();else if(bk.ready)bkWrite();});
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden){tick();if(AC&&AC.state!=='running'&&(Object.keys(AMB).length||(PL.el&&!PL.el.paused)))AC.resume().catch(()=>{});}});
   const persist=()=>{if(T.status==='running'){bankFocus();T.lastTick=Date.now();}flushNote();save();};
   window.addEventListener('beforeunload',persist);
   window.addEventListener('pagehide',persist);
@@ -3052,16 +3135,16 @@ function startWorkerTick(){   // background tabs throttle timers; a worker keeps
 function init(){
   applyCursor();buildSettings();buildSky();buildAmb();buildSubjects();PL.ready=plLoad();
   restoreTimer();
-  const min=state.ui.min==null?window.innerWidth<760:!!state.ui.min;
+  const min=state.ui.min==null?(window.innerWidth<760||window.innerHeight<500):!!state.ui.min;
   el.dash.classList.toggle('min',min);el.dash.classList.toggle('shut',min);el.dashToggle.setAttribute('aria-expanded',String(!min));
   bindEvents();
   resizeScene();
   scene.g=0;
   syncDay();
   updateAll();
-  try{const n=sessionStorage.getItem('sg.note');if(n){sessionStorage.removeItem('sg.note');setTimeout(()=>toast(n),600);}}catch(e){}
-  if(bkNote)toast(bkNote==='restored'?'Your study data was restored from StudyGrove-Data.js':'Your backup file was merged in');
-  bkInit();renderFull();renderClock();
+  if(!(document.fullscreenEnabled||document.webkitFullscreenEnabled))document.documentElement.classList.add('no-full');
+  try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist();}catch(e){}
+  renderFull();renderClock();
   save();
   setInterval(tick,250);startWorkerTick();clockLoop();
   requestAnimationFrame(frame);
